@@ -27,7 +27,6 @@ class Demo6ApplicationTests {
 
         // Verify
         assertThat(dencodeEntity.getNormalUrl()).isEqualTo(normalUrl);
-
         String key = decoderRepository.getKey(normalUrl).get();
         assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
     }
