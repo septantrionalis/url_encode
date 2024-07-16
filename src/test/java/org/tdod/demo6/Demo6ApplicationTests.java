@@ -60,42 +60,54 @@ class Demo6ApplicationTests {
 
     @Test
     void encodeInvalidUrl() {
+        boolean thrown = false;
         String normalUrl = "htt://example.com/library/react";
         try {
             DencodeEntity encodeEntity = demo6Application.encode(normalUrl);
         } catch (DencodeException e) {
             assertThat(e.getMessage().equals(Messages.INVALID_URL)).isTrue();
+            thrown = true;
         }
+        assertThat(thrown).isTrue();
     }
 
     @Test
     void encodeAlreadyShortenedUrl() {
+        boolean thrown = false;
         String shortenedUrl = decoderRepository.getShortenedUrlHost();
         String normalUrl = shortenedUrl + "library/react";
         try {
             demo6Application.encode(normalUrl);
         } catch (DencodeException e) {
             assertThat(e.getMessage().equals(Messages.URL_ALREADY_SHORTENED)).isTrue();
+            thrown = true;
         }
+        assertThat(thrown).isTrue();
     }
 
     @Test
     void decodeInvalidUrl() {
+        boolean thrown = false;
         String invalidShortenedUrl = "http://tdod.org/";
         try {
             demo6Application.decode(invalidShortenedUrl);
         } catch (DencodeException e) {
             assertThat(e.getMessage().equals(Messages.INVALID_SHORTENED_URL)).isTrue();
+            thrown = true;
         }
+        assertThat(thrown).isTrue();
     }
 
     @Test
     void decodeShortUrlNotFound() {
+        boolean thrown = false;
         String invalidShortenedUrl = "https://short.est/dZ28x3";
         try {
             demo6Application.decode(invalidShortenedUrl);
         } catch (DencodeException e) {
             assertThat(e.getMessage().equals(Messages.SHORTENED_URL_NOT_FOUND)).isTrue();
+            thrown = true;
         }
+        assertThat(thrown).isTrue();
     }
 }
