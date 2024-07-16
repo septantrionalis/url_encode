@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -39,5 +41,19 @@ public class DencoderRepostitoryTest {
         boolean exists = dencoderRepository.isKeyExists("key1");
 
         assertThat(exists).isFalse();
+    }
+
+    @Test
+    void testGetValidKey() {
+        String key = "key1";
+        String normalUrl = "https://example.com/library/react ";
+        dencoderRepository.addKey(key, normalUrl);
+        dencoderRepository.addKey("key2", "normalUrl2");
+        dencoderRepository.addKey("key3", "normalUrl3");
+
+        Optional<String> result = dencoderRepository.getKey(normalUrl);
+
+        assertThat(result.get()).isEqualTo(key);
+
     }
 }

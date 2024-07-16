@@ -61,13 +61,13 @@ public class DencoderRepositoryImpl implements DencoderRepository {
     @Override
     public Optional<String> getKey(String normalUrl) {
 
-        Optional<String> test = shortenedUrlKeyStore.entrySet()
+        Optional<String> key = shortenedUrlKeyStore.entrySet()
                 .stream()
                 .filter(e -> e.getValue().equalsIgnoreCase(normalUrl))
                 .findFirst()
                 .map(Map.Entry::getKey);
 
-        return test;
+        return key;
     }
 
     /**
