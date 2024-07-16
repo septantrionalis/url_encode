@@ -4,7 +4,7 @@ This project will shorten a URL as described in the assignment.<BR>
 Credits: Ron Kinney (ronkinney@gmail.com)<BR>
 <BR>
 Design decisions :
-- Repository class doesn't goto a DB. Will use a HashMap to similate.
+- Repository class doesn't go to a DB. Will use a HashMap to simulate.
 - If the user asks to shorten the same URL, the API will not regenerate the shortened URL but will return the old one.
 - The shortened host is reserved. The user can't pass in a shortened host into the encode API to try and shorten it again.
 
