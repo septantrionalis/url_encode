@@ -1,6 +1,7 @@
 # url_encode
 
 This project will shorten a URL as described in the assignment.<BR>
+Credits: Ron Kinney (ronkinney@gmail.com)<BR>
 <BR>
 Design decisions :
 - Repository class doesn't goto a DB. Will use a HashMap to similate.
