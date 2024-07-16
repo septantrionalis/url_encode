@@ -29,7 +29,7 @@ curl --location 'localhost:8080/encode?url=https%3A%2F%2Fexample.com%2Flibrary%2
 
 curl --location 'localhost:8080/decode?url=https%3A%2F%2Fshort.est%2Feu5PXE'<BR>
 
-### Sample Reponse:
+### Sample Valid Response:
 ```
 {
     "shortenedUrl": "https://short.est/eu5PXE",
@@ -37,6 +37,16 @@ curl --location 'localhost:8080/decode?url=https%3A%2F%2Fshort.est%2Feu5PXE'<BR>
 }
 ```
 
+### Sample Invalid Response:
+```
+{
+    "timestamp": "2024-07-16T18:24:53.709+00:00",
+    "status": 500,
+    "error": "Internal Server Error",
+    "message": "Shortened version of URL not found.",
+    "path": "/decode"
+}
+```
 
 # Sample curl statements for debug REST API:
 
