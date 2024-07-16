@@ -15,7 +15,12 @@ public class Demo6Application {
 
     @GetMapping("/encode")
     public String encode() {
-        return "Hello World";
+        return "Encode";
+    }
+
+    @GetMapping("/encode")
+    public String decode() {
+        return "Decode";
     }
 
 }
