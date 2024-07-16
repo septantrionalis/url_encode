@@ -24,5 +24,9 @@ public class DencoderRepositoryImpl implements DencoderRepository {
         return false;
     }
 
+    @Override
+    public void addKey(String key) {
+        shortenedUrlKeyStore.add(key);
+    }
 
 }
