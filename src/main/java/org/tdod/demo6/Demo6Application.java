@@ -3,10 +3,14 @@ package org.tdod.demo6;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.tdod.demo6.service.DencoderService;
+
+import java.util.Optional;
 
 
 @SpringBootApplication
@@ -27,7 +31,12 @@ public class Demo6Application {
 
     @GetMapping("/decode")
     public String decode(@RequestParam(value = "url") String shortenedUrl) {
-        return dencoderService.decode(shortenedUrl);
+        Optional<String> normalString = dencoderService.decode(shortenedUrl);
+        if (normalString.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shortened version of URL not found.");
+        }
+
+        return normalString.get();
     }
 
 }

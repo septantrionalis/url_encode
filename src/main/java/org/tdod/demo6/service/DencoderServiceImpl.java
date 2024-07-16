@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.tdod.demo6.repository.DencoderRepository;
 
 import java.security.SecureRandom;
+import java.util.Optional;
 
 @Service
 public class DencoderServiceImpl implements DencoderService {
@@ -34,8 +35,12 @@ public class DencoderServiceImpl implements DencoderService {
     }
 
     @Override
-    public String decode(String url) {
-        return "decoded url: " + url;
+    public Optional<String> decode(String url) {
+        String key = "testKey";
+        dencoderRepository.addKey(key, "test123");
+        Optional<String> normalUrl = dencoderRepository.getNormalUrl("test123");
+
+        return normalUrl;
     }
 
     private String generateRandomString() {
