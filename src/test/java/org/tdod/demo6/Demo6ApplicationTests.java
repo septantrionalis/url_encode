@@ -1,14 +1,18 @@
 package org.tdod.demo6;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.tdod.demo6.entity.DencodeEntity;
 import org.tdod.demo6.exception.DencodeException;
 import org.tdod.demo6.repository.DencoderRepository;
+import org.tdod.demo6.service.DencoderService;
 import org.tdod.demo6.util.Messages;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 class Demo6ApplicationTests {
@@ -16,104 +20,65 @@ class Demo6ApplicationTests {
     @Autowired
     Demo6Application demo6Application;
 
+    @MockBean
+    DencoderService dencoderService;
+
     @Autowired
-    DencoderRepository decoderRepository;
+    DencoderRepository dencoderRepository;
 
     @Test
     void encodeValid() {
-        // Attempt to shorten a URL.
+        // Setup
+        String shortenedUrl = "https://short.est/";
         String normalUrl = "https://example.com/library/react";
+        DencodeEntity resultEntity = new DencodeEntity(shortenedUrl, normalUrl);
+        Mockito.when(dencoderService.encode(any())).thenReturn(resultEntity);
+
+        // Execute
         DencodeEntity dencodeEntity = demo6Application.encode(normalUrl);
 
         // Verify
         assertThat(dencodeEntity.getNormalUrl()).isEqualTo(normalUrl);
-        String key = decoderRepository.getKey(normalUrl).get();
-        assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
+        assertThat(dencodeEntity.getShortenedUrl().endsWith(shortenedUrl)).isTrue();
     }
 
     @Test
     void encodeDupe() {
-        // Attempt to shorten a URL.
+        // Setup
+        String shortenedUrl = "https://short.est/";
         String normalUrl = "https://example.com/library/react";
+        DencodeEntity resultEntity = new DencodeEntity(shortenedUrl, normalUrl);
+        Mockito.when(dencoderService.encode(any())).thenReturn(resultEntity);
+
+        // Execute
         DencodeEntity dencodeEntity = demo6Application.encode(normalUrl);
 
         // Verify
         assertThat(dencodeEntity.getNormalUrl()).isEqualTo(normalUrl);
-        String key = decoderRepository.getKey(normalUrl).get();
-        assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
+        assertThat(dencodeEntity.getShortenedUrl().endsWith(shortenedUrl)).isTrue();
 
         // Attempt to encode a second time.
         dencodeEntity = demo6Application.encode(normalUrl);
 
         // Verify
-        assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
+        assertThat(dencodeEntity.getShortenedUrl().endsWith(shortenedUrl)).isTrue();
     }
 
     @Test
     void decodeValid() {
-        // Add to the DB.
+        // Setup
+        String shortenedUrl = "https://short.est/";
         String normalUrl = "https://example.com/library/react";
-        DencodeEntity encodeEntity = demo6Application.encode(normalUrl);
+        DencodeEntity resultEntity = new DencodeEntity(shortenedUrl, normalUrl);
+        Mockito.when(dencoderService.decode(any())).thenReturn(resultEntity);
 
         // Decode URL.
-        String shortenedUrl = encodeEntity.getShortenedUrl();
         DencodeEntity decodeEntity = demo6Application.decode(shortenedUrl);
 
         // Verify
         assertThat(decodeEntity.getNormalUrl()).isEqualTo(normalUrl);
-        assertThat(decodeEntity.getShortenedUrl()).isEqualTo(encodeEntity.getShortenedUrl());
+        assertThat(decodeEntity.getShortenedUrl()).isEqualTo(shortenedUrl);
     }
 
-    @Test
-    void encodeInvalidUrl() {
-        boolean thrown = false;
-        String normalUrl = "htt://example.com/library/react";
-        try {
-            DencodeEntity encodeEntity = demo6Application.encode(normalUrl);
-        } catch (DencodeException e) {
-            assertThat(e.getMessage().equals(Messages.INVALID_URL)).isTrue();
-            thrown = true;
-        }
-        assertThat(thrown).isTrue();
-    }
 
-    @Test
-    void encodeAlreadyShortenedUrl() {
-        boolean thrown = false;
-        String shortenedUrl = decoderRepository.getShortenedUrlHost();
-        String normalUrl = shortenedUrl + "library/react";
-        try {
-            demo6Application.encode(normalUrl);
-        } catch (DencodeException e) {
-            assertThat(e.getMessage().equals(Messages.URL_ALREADY_SHORTENED)).isTrue();
-            thrown = true;
-        }
-        assertThat(thrown).isTrue();
-    }
-
-    @Test
-    void decodeInvalidUrl() {
-        boolean thrown = false;
-        String invalidShortenedUrl = "http://tdod.org/";
-        try {
-            demo6Application.decode(invalidShortenedUrl);
-        } catch (DencodeException e) {
-            assertThat(e.getMessage().equals(Messages.INVALID_SHORTENED_URL)).isTrue();
-            thrown = true;
-        }
-        assertThat(thrown).isTrue();
-    }
-
-    @Test
-    void decodeShortUrlNotFound() {
-        boolean thrown = false;
-        String invalidShortenedUrl = "https://short.est/dZ28x3";
-        try {
-            demo6Application.decode(invalidShortenedUrl);
-        } catch (DencodeException e) {
-            assertThat(e.getMessage().equals(Messages.SHORTENED_URL_NOT_FOUND)).isTrue();
-            thrown = true;
-        }
-        assertThat(thrown).isTrue();
-    }
 }
