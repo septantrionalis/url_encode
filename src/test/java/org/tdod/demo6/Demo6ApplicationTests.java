@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.tdod.demo6.entity.DencodeEntity;
-import org.tdod.demo6.exception.DencodeException;
 import org.tdod.demo6.repository.DencoderRepository;
 import org.tdod.demo6.service.DencoderService;
-import org.tdod.demo6.util.Messages;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,9 +20,6 @@ class Demo6ApplicationTests {
 
     @MockBean
     DencoderService dencoderService;
-
-    @Autowired
-    DencoderRepository dencoderRepository;
 
     @Test
     void encodeValid() {
