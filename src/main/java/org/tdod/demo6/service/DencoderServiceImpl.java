@@ -37,6 +37,12 @@ public class DencoderServiceImpl implements DencoderService {
             throw new DecodeException("Invalid URL");
         }
 
+        String host = extractUrlHost(url);
+        // Can't shorten an already shortened URL
+        if (host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
+            throw new DecodeException("The URL already appears to be shortened.");
+        }
+
         // If the URL has already been shortened, do not generate and grab the old one.
         Optional<String> key = dencoderRepository.getKey(url);
         if (key.isPresent()) {
@@ -146,19 +152,17 @@ public class DencoderServiceImpl implements DencoderService {
      * @return the host of the URL
      */
     private String extractUrlHost(String urlString) {
-        if (urlString == null || urlString.isEmpty()) {
-            throw new DecodeException("URL String is empty");
-        }
+        try {
+            URL url = new URL(urlString);
+            String protocol = url.getProtocol();
+            String host = url.getHost();
 
-        int lastIndex = urlString.lastIndexOf('/');
-        if (lastIndex == -1) {
-            throw new DecodeException("The URL doesn't appear to be valid");
+            return protocol + "://" + host + "/";
+        } catch (MalformedURLException e) {
+            return null;
         }
-
-        return urlString.substring(0, lastIndex + 1);
     }
-
-    /**
+        /**
      * Checks if the URL in string format is a valid URL.
      * @param urlString the URL in question
      * @return true if the string appears to be a valid URL, false otherwise.
