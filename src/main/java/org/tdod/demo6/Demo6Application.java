@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.tdod.demo6.entity.DencodeEntity;
 import org.tdod.demo6.service.DencoderService;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -49,5 +50,8 @@ public class Demo6Application {
         return ResponseEntity.ok().build();
     }
 
-
+    @GetMapping("/get")
+    public List<DencodeEntity> decode() {
+        return dencoderService.getAll();
+    }
 }

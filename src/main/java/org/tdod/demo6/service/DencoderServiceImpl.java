@@ -11,6 +11,7 @@ import org.tdod.demo6.repository.DencoderRepository;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,6 +60,11 @@ public class DencoderServiceImpl implements DencoderService {
         }
 
         return new DencodeEntity(url, normalUrl.get());
+    }
+
+    @Override
+    public List<DencodeEntity> getAll() {
+        return dencoderRepository.getAll();
     }
 
     @Override

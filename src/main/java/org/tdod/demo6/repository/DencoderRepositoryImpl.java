@@ -1,6 +1,7 @@
 package org.tdod.demo6.repository;
 
 import org.springframework.stereotype.Service;
+import org.tdod.demo6.entity.DencodeEntity;
 
 import java.util.*;
 
@@ -31,5 +32,22 @@ public class DencoderRepositoryImpl implements DencoderRepository {
     @Override
     public Optional<String> getNormalUrl(String key) {
         return Optional.ofNullable(shortenedUrlKeyStore.get(key));
+    }
+
+    public List<DencodeEntity> getAll() {
+        List<DencodeEntity> list = new ArrayList<>();
+
+        Iterator<Map.Entry<String, String>> itr = shortenedUrlKeyStore.entrySet().iterator();
+
+        while(itr.hasNext()) {
+            Map.Entry<String, String> entry = itr.next();
+
+            String shortenedUrl = getShortenedUrlHost() + entry.getKey();
+            String normalUrl = entry.getValue();
+            DencodeEntity entity = new DencodeEntity(shortenedUrl, normalUrl);
+            list.add(entity);
+        }
+
+        return list;
     }
 }
