@@ -21,9 +21,11 @@ class Demo6ApplicationTests {
 
     @Test
     void encodeValid() {
+        // Attempt to shorten a URL.
         String normalUrl = "https://example.com/library/react";
         DencodeEntity dencodeEntity = demo6Application.encode(normalUrl);
 
+        // Verify
         assertThat(dencodeEntity.getNormalUrl()).isEqualTo(normalUrl);
 
         String key = decoderRepository.getKey(normalUrl).get();
@@ -32,15 +34,19 @@ class Demo6ApplicationTests {
 
     @Test
     void encodeDupe() {
+        // Attempt to shorten a URL.
         String normalUrl = "https://example.com/library/react";
         DencodeEntity dencodeEntity = demo6Application.encode(normalUrl);
 
+        // Verify
         assertThat(dencodeEntity.getNormalUrl()).isEqualTo(normalUrl);
-
         String key = decoderRepository.getKey(normalUrl).get();
         assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
 
+        // Attempt to encode a second time.
         dencodeEntity = demo6Application.encode(normalUrl);
+
+        // Verify
         assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
     }
 
@@ -50,10 +56,11 @@ class Demo6ApplicationTests {
         String normalUrl = "https://example.com/library/react";
         DencodeEntity encodeEntity = demo6Application.encode(normalUrl);
 
-        // Dencode URL.
+        // Decode URL.
         String shortenedUrl = encodeEntity.getShortenedUrl();
         DencodeEntity decodeEntity = demo6Application.decode(shortenedUrl);
 
+        // Verify
         assertThat(decodeEntity.getNormalUrl()).isEqualTo(normalUrl);
         assertThat(decodeEntity.getShortenedUrl()).isEqualTo(encodeEntity.getShortenedUrl());
     }
