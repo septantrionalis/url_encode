@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.tdod.demo6.entity.DencodeEntity;
+import org.tdod.demo6.exception.DecodeException;
 import org.tdod.demo6.repository.DencoderRepository;
+import org.tdod.demo6.util.Messages;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +49,15 @@ class Demo6ApplicationTests {
 
         assertThat(decodeEntity.getNormalUrl()).isEqualTo(normalUrl);
         assertThat(decodeEntity.getShortenedUrl()).isEqualTo(encodeEntity.getShortenedUrl());
+    }
 
+    @Test
+    void encodeInvalidUrl() {
+        String normalUrl = "htt://example.com/library/react";
+        try {
+            DencodeEntity encodeEntity = demo6Application.encode(normalUrl);
+        } catch (DecodeException e) {
+            assertThat(e.getMessage().equals(Messages.INVALID_URL)).isTrue();
+        }
     }
 }

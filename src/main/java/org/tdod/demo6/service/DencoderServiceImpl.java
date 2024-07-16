@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.tdod.demo6.entity.DencodeEntity;
 import org.tdod.demo6.exception.DecodeException;
 import org.tdod.demo6.repository.DencoderRepository;
+import org.tdod.demo6.util.Messages;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,7 +35,7 @@ public class DencoderServiceImpl implements DencoderService {
     public DencodeEntity encode(String url) {
         // Do not process if url is invalid.
         if (!isValidURL(url)) {
-            throw new DecodeException("Invalid URL");
+            throw new DecodeException(Messages.INVALID_URL);
         }
 
         String host = extractUrlHost(url);
