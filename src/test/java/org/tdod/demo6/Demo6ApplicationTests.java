@@ -4,12 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.tdod.demo6.entity.DencodeEntity;
-import org.tdod.demo6.exception.DecodeException;
+import org.tdod.demo6.exception.DencodeException;
 import org.tdod.demo6.repository.DencoderRepository;
 import org.tdod.demo6.util.Messages;
-
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,7 +53,7 @@ class Demo6ApplicationTests {
         String normalUrl = "htt://example.com/library/react";
         try {
             DencodeEntity encodeEntity = demo6Application.encode(normalUrl);
-        } catch (DecodeException e) {
+        } catch (DencodeException e) {
             assertThat(e.getMessage().equals(Messages.INVALID_URL)).isTrue();
         }
     }

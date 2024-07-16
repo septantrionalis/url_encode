@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tdod.demo6.entity.DencodeEntity;
-import org.tdod.demo6.exception.DecodeException;
+import org.tdod.demo6.exception.DencodeException;
 import org.tdod.demo6.repository.DencoderRepository;
 import org.tdod.demo6.util.Messages;
 
@@ -35,13 +35,13 @@ public class DencoderServiceImpl implements DencoderService {
     public DencodeEntity encode(String url) {
         // Do not process if url is invalid.
         if (!isValidURL(url)) {
-            throw new DecodeException(Messages.INVALID_URL);
+            throw new DencodeException(Messages.INVALID_URL);
         }
 
         String host = extractUrlHost(url);
         // Can't shorten an already shortened URL
         if (host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
-            throw new DecodeException("The URL already appears to be shortened.");
+            throw new DencodeException("The URL already appears to be shortened.");
         }
 
         // If the URL has already been shortened, do not generate and grab the old one.
@@ -77,14 +77,14 @@ public class DencoderServiceImpl implements DencoderService {
 
         // Check if the URL is valid
         if (!host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
-            throw new DecodeException("This doesn't appear to be a valid shortened URL.");
+            throw new DencodeException("This doesn't appear to be a valid shortened URL.");
         }
 
         Optional<String> normalUrl = dencoderRepository.getNormalUrl(key);
 
         // Shortened URL is not found
         if (normalUrl.isEmpty()) {
-            throw new DecodeException("Shortened version of URL not found.");
+            throw new DencodeException("Shortened version of URL not found.");
         }
 
         return new DencodeEntity(url, normalUrl.get());
@@ -135,12 +135,12 @@ public class DencoderServiceImpl implements DencoderService {
      */
     private String extractUrlKey(String urlString) {
         if (urlString == null || urlString.isEmpty()) {
-            throw new DecodeException("URL String is empty");
+            throw new DencodeException("URL String is empty");
         }
 
         int lastIndex = urlString.lastIndexOf('/');
         if (lastIndex == -1) {
-            throw new DecodeException("The URL doesn't appear to be valid");
+            throw new DencodeException("The URL doesn't appear to be valid");
         }
 
         return urlString.substring(lastIndex + 1);
