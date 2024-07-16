@@ -8,4 +8,5 @@ public interface DencoderService {
 
     Optional<String> decode(String url);
 
+    void addKey(String key, String url);
 }

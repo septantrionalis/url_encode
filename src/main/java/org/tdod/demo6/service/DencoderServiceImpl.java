@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.tdod.demo6.exception.DecodeException;
 import org.tdod.demo6.repository.DencoderRepository;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Optional;
 
@@ -36,11 +39,21 @@ public class DencoderServiceImpl implements DencoderService {
 
     @Override
     public Optional<String> decode(String url) {
-        String key = "testKey";
-        dencoderRepository.addKey(key, "test123");
-        Optional<String> normalUrl = dencoderRepository.getNormalUrl("test123");
+        String key = extractUrlKey(url);
+        String host = extractUrlHost(url);
+
+        Optional<String> normalUrl = dencoderRepository.getNormalUrl(key);
+
+        if (normalUrl.isEmpty()) {
+            throw new DecodeException("Shortened version of URL not found.");
+        }
 
         return normalUrl;
+    }
+
+    @Override
+    public void addKey(String key, String url) {
+        dencoderRepository.addKey(key, url);
     }
 
     private String generateRandomString() {
@@ -54,6 +67,31 @@ public class DencoderServiceImpl implements DencoderService {
 
         return sb.toString();
     }
+
+    private String extractUrlKey(String urlString) {
+        if (urlString == null || urlString.isEmpty()) {
+            throw new DecodeException("URL String is empty");
+        }
+
+        int lastIndex = urlString.lastIndexOf('/');
+        if (lastIndex == -1) {
+            throw new DecodeException("The URL doesn't appear to be valid");
+        }
+
+        return urlString.substring(lastIndex + 1);
+    }
+
+    private String extractUrlHost(String urlString) {
+        if (urlString == null || urlString.isEmpty()) {
+            throw new DecodeException("URL String is empty");
+        }
+
+        int lastIndex = urlString.lastIndexOf('/');
+        if (lastIndex == -1) {
+            throw new DecodeException("The URL doesn't appear to be valid");
+        }
+
+        return urlString.substring(0, lastIndex + 1);    }
 
 
 }

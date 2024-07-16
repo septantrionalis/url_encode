@@ -31,11 +31,13 @@ public class DencoderRepositoryImpl implements DencoderRepository {
     @Override
     public Optional<String> getNormalUrl(String key) {
 
-        Optional<String> normalUrl = shortenedUrlKeyStore.entrySet()
+        /* Optional<String> normalUrl = shortenedUrlKeyStore.entrySet()
                 .stream()
                 .filter(e -> e.getValue().equalsIgnoreCase(key))
                 .findFirst()
-                .map(Map.Entry::getKey);
+                .map(Map.Entry::getValue);*/
+
+        Optional<String> normalUrl = Optional.ofNullable(shortenedUrlKeyStore.get(key));
 
         return normalUrl;
     }

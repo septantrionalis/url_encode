@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,12 +33,21 @@ public class Demo6Application {
 
     @GetMapping("/decode")
     public String decode(@RequestParam(value = "url") String shortenedUrl) {
-        Optional<String> normalString = dencoderService.decode(shortenedUrl);
-        if (normalString.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shortened version of URL not found.");
+        Optional<String> normalString;
+        try {
+            normalString = dencoderService.decode(shortenedUrl);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
         return normalString.get();
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<String> add(@RequestParam(value = "key") String key,
+                                      @RequestParam(value = "normal-url") String normalUrl) {
+        dencoderService.addKey(key, normalUrl);
+
+        return ResponseEntity.ok().build();
+    }
 }
