@@ -41,7 +41,7 @@ public class DencoderServiceImpl implements DencoderService {
         String host = extractUrlHost(url);
         // Can't shorten an already shortened URL
         if (host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
-            throw new DencodeException("The URL already appears to be shortened.");
+            throw new DencodeException(Messages.URL_ALREADY_SHORTENED);
         }
 
         // If the URL has already been shortened, do not generate and grab the old one.
@@ -77,14 +77,14 @@ public class DencoderServiceImpl implements DencoderService {
 
         // Check if the URL is valid
         if (!host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
-            throw new DencodeException("This doesn't appear to be a valid shortened URL.");
+            throw new DencodeException(Messages.INVALID_SHORTENED_URL);
         }
 
         Optional<String> normalUrl = dencoderRepository.getNormalUrl(key);
 
         // Shortened URL is not found
         if (normalUrl.isEmpty()) {
-            throw new DencodeException("Shortened version of URL not found.");
+            throw new DencodeException(Messages.SHORTENED_URL_NOT_FOUND);
         }
 
         return new DencodeEntity(url, normalUrl.get());

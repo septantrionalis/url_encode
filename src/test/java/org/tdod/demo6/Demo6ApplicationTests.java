@@ -57,4 +57,35 @@ class Demo6ApplicationTests {
             assertThat(e.getMessage().equals(Messages.INVALID_URL)).isTrue();
         }
     }
+
+    @Test
+    void encodeAlreadyShortenedUrl() {
+        String shortenedUrl = decoderRepository.getShortenedUrlHost();
+        String normalUrl = shortenedUrl + "library/react";
+        try {
+            demo6Application.encode(normalUrl);
+        } catch (DencodeException e) {
+            assertThat(e.getMessage().equals(Messages.URL_ALREADY_SHORTENED)).isTrue();
+        }
+    }
+
+    @Test
+    void decodeInvalidUrl() {
+        String invalidShortenedUrl = "http://tdod.org/";
+        try {
+            demo6Application.decode(invalidShortenedUrl);
+        } catch (DencodeException e) {
+            assertThat(e.getMessage().equals(Messages.INVALID_SHORTENED_URL)).isTrue();
+        }
+    }
+
+    @Test
+    void decodeShortUrlNotFound() {
+        String invalidShortenedUrl = "https://short.est/dZ28x3";
+        try {
+            demo6Application.decode(invalidShortenedUrl);
+        } catch (DencodeException e) {
+            assertThat(e.getMessage().equals(Messages.SHORTENED_URL_NOT_FOUND)).isTrue();
+        }
+    }
 }

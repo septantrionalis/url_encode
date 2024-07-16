@@ -72,7 +72,7 @@ public class Demo6Application {
      * @return all data in the DB.
      */
     @GetMapping("/get")
-    public List<DencodeEntity> decode() {
+    public List<DencodeEntity> getAll() {
         return dencoderService.getAll();
     }
 }
