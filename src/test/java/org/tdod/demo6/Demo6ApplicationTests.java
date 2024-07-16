@@ -20,10 +20,6 @@ class Demo6ApplicationTests {
     DencoderRepository decoderRepository;
 
     @Test
-    void contextLoads() {
-    }
-
-    @Test
     void encodeValid() {
         String normalUrl = "https://example.com/library/react";
         DencodeEntity dencodeEntity = demo6Application.encode(normalUrl);

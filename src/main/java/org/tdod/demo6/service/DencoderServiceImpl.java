@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class DencoderServiceImpl implements DencoderService {
 
-    Logger logger = LoggerFactory.getLogger(DencoderServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(DencoderServiceImpl.class);
 
     // We could technically pull these into the DB or a property file for run time adjustment.
     private static final int SIZE = 6;
