@@ -23,7 +23,7 @@ public class DencoderServiceTest {
     DencoderRepository dencoderRepository;
 
     @Test
-    void testEncode() {
+    void testEncodeValid() {
         Mockito.when(dencoderRepository.getShortenedUrlHost()).thenReturn("https://short.est/");
         Mockito.when(dencoderRepository.isKeyExists(any())).thenReturn(false);
 
@@ -35,7 +35,7 @@ public class DencoderServiceTest {
     }
 
     @Test
-    void testDecode() {
+    void testDecodeValid() {
         String shortenedUrl = "https://short.est/";
         Optional<String> normalUrl = Optional.of("https://example.com/library/react");
         Mockito.when(dencoderRepository.getShortenedUrlHost()).thenReturn(shortenedUrl);
@@ -45,6 +45,5 @@ public class DencoderServiceTest {
 
         assertThat(dencodeEntity.getNormalUrl()).isEqualTo(normalUrl.get());
         assertThat(dencodeEntity.getShortenedUrl()).isNotEmpty();
-
     }
 }
