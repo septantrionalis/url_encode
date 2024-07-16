@@ -8,7 +8,8 @@ import java.util.*;
 @Repository
 public class DencoderRepositoryImpl implements DencoderRepository {
 
-    private Map<String, String> shortenedUrlKeyStore = new HashMap();
+    // First value is the key (shortened url).  Second value is the original url.
+    private static final Map<String, String> shortenedUrlKeyStore = new HashMap();
 
     /**
      * Gets the shortened host name.
