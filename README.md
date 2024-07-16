@@ -17,7 +17,8 @@ This is a Spring Boot application. The starting point is "org.tdod.demo6.Demo6Ap
 - DencocderEntity in the entity package is your POJO that is returned to the end user in JSON format.
 - test folder contains the integration tests for Demo6Application and is called "Demo6ApplicationTests"
 
-Bring the application up in a Spring Boot environment.  The following curl statements can be run once the app is up:
+Bring the application up in a Spring Boot environment.  You should be able to clone the project, open it up in IntelliJ and run it.
+The following curl statements can be run once the app is up:
 
 # Sample Curl Statements:
 
