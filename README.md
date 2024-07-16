@@ -48,7 +48,7 @@ curl --location 'localhost:8080/decode?url=https%3A%2F%2Fshort.est%2Feu5PXE'<BR>
 }
 ```
 
-# Sample curl statements for debug REST API:
+# Sample curl statements for debugging the REST API. These should not be sursfaced to end user.
 
 These endpoints weren't part of the assignment, but used for testing.
 
