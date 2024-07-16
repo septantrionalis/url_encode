@@ -20,6 +20,7 @@ public class DencoderServiceImpl implements DencoderService {
 
     Logger logger = LoggerFactory.getLogger(DencoderServiceImpl.class);
 
+    // We could technically pull these into the DB or a property file for run time adjustment.
     private static final int SIZE = 6;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -135,12 +136,12 @@ public class DencoderServiceImpl implements DencoderService {
      */
     private String extractUrlKey(String urlString) {
         if (urlString == null || urlString.isEmpty()) {
-            throw new DencodeException("URL String is empty");
+            throw new DencodeException(Messages.URL_STRING_IS_EMPTY);
         }
 
         int lastIndex = urlString.lastIndexOf('/');
         if (lastIndex == -1) {
-            throw new DencodeException("The URL doesn't appear to be valid");
+            throw new DencodeException(Messages.INVALID_URL);
         }
 
         return urlString.substring(lastIndex + 1);

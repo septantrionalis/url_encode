@@ -35,6 +35,20 @@ class Demo6ApplicationTests {
     }
 
     @Test
+    void encodeDupe() {
+        String normalUrl = "https://example.com/library/react";
+        DencodeEntity dencodeEntity = demo6Application.encode(normalUrl);
+
+        assertThat(dencodeEntity.getNormalUrl()).isEqualTo(normalUrl);
+
+        String key = decoderRepository.getKey(normalUrl).get();
+        assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
+
+        dencodeEntity = demo6Application.encode(normalUrl);
+        assertThat(dencodeEntity.getShortenedUrl().endsWith(key)).isTrue();
+    }
+
+    @Test
     void decodeValid() {
         // Add to the DB.
         String normalUrl = "https://example.com/library/react";
