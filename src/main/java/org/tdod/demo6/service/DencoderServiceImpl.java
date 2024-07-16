@@ -40,12 +40,12 @@ public class DencoderServiceImpl implements DencoderService {
         }
 
         String host = extractUrlHost(url);
-        // Can't shorten an already shortened URL
+        // The user passed in the reserved shortened URL. We wont shorten it again.
         if (host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
             throw new DencodeException(Messages.URL_ALREADY_SHORTENED);
         }
 
-        // If the URL has already been shortened, do not generate and grab the old one.
+        // Check if the URL already exists in our DB. If so, return the already generated url.
         Optional<String> key = dencoderRepository.getKey(url);
         if (key.isPresent()) {
             String shortenedKey = dencoderRepository.getShortenedUrlHost() + key.get();
