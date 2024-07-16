@@ -4,4 +4,6 @@ public interface DencoderRepository {
 
     String getShortenedUrlHost();
 
+    boolean isKeyExists(String key);
+
 }
