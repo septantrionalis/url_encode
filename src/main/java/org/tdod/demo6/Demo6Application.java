@@ -40,7 +40,12 @@ public class Demo6Application {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
+        if (!normalString.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shortened URL not valid");
+        }
+
         return normalString.get();
+
     }
 
     @PostMapping("/add")

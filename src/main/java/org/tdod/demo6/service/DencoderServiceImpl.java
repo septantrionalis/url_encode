@@ -42,6 +42,10 @@ public class DencoderServiceImpl implements DencoderService {
         String key = extractUrlKey(url);
         String host = extractUrlHost(url);
 
+        if (!host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
+            throw new DecodeException("This doesn't appear to be a valid shortened URL.");
+        }
+
         Optional<String> normalUrl = dencoderRepository.getNormalUrl(key);
 
         if (normalUrl.isEmpty()) {
