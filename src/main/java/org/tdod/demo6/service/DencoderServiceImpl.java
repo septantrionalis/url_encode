@@ -25,6 +25,11 @@ public class DencoderServiceImpl implements DencoderService {
     @Autowired
     DencoderRepository dencoderRepository;
 
+    /**
+     * Encodes a URL to a shortened URL
+     * @param url the regular url to shorten.
+     * @return a shortened version of the regular url.
+     */
     @Override
     public DencodeEntity encode(String url) {
         // Do not process if url is invalid.
@@ -53,17 +58,24 @@ public class DencoderServiceImpl implements DencoderService {
         return new DencodeEntity(shortenedUrl, url);
     }
 
+    /**
+     * Decodes a shortened URL to its original URL.
+     * @param url the shortened URL.
+     * @return returns the original URL.
+     */
     @Override
     public DencodeEntity decode(String url) {
         String key = extractUrlKey(url);
         String host = extractUrlHost(url);
 
+        // Check if the URL is valid
         if (!host.equalsIgnoreCase(dencoderRepository.getShortenedUrlHost())) {
             throw new DecodeException("This doesn't appear to be a valid shortened URL.");
         }
 
         Optional<String> normalUrl = dencoderRepository.getNormalUrl(key);
 
+        // Shortened URL is not found
         if (normalUrl.isEmpty()) {
             throw new DecodeException("Shortened version of URL not found.");
         }
@@ -71,16 +83,31 @@ public class DencoderServiceImpl implements DencoderService {
         return new DencodeEntity(url, normalUrl.get());
     }
 
+    /**
+     * Used for debug purposes!
+     * Returns all data in the DB.
+     * @return all data in the DB.
+     */
     @Override
     public List<DencodeEntity> getAll() {
         return dencoderRepository.getAll();
     }
 
+    /**
+     * Used for debug purposes!
+     * Adds a key for the specified url to the DB
+     * @param key the key to add.
+     * @param url the url to add.
+     */
     @Override
     public void addKey(String key, String url) {
         dencoderRepository.addKey(key, url);
     }
 
+    /**
+     * Generates a random string of characters and numbers based on the size.
+     * @return a random string of characters and numbers based on the size.
+     */
     private String generateRandomString() {
         SecureRandom random = new SecureRandom();
         StringBuilder sb = new StringBuilder(SIZE);
@@ -93,6 +120,12 @@ public class DencoderServiceImpl implements DencoderService {
         return sb.toString();
     }
 
+    /**
+     * Given a shortened URL in string format, return everything after the last backslash.
+     *
+     * @param urlString the URL in question
+     * @return everything after the last backslash.
+     */
     private String extractUrlKey(String urlString) {
         if (urlString == null || urlString.isEmpty()) {
             throw new DecodeException("URL String is empty");
@@ -106,6 +139,12 @@ public class DencoderServiceImpl implements DencoderService {
         return urlString.substring(lastIndex + 1);
     }
 
+    /**
+     * Given a URL in string format, return the host.
+     *
+     * @param urlString the URL in question.
+     * @return the host of the URL
+     */
     private String extractUrlHost(String urlString) {
         if (urlString == null || urlString.isEmpty()) {
             throw new DecodeException("URL String is empty");
@@ -119,6 +158,11 @@ public class DencoderServiceImpl implements DencoderService {
         return urlString.substring(0, lastIndex + 1);
     }
 
+    /**
+     * Checks if the URL in string format is a valid URL.
+     * @param urlString the URL in question
+     * @return true if the string appears to be a valid URL, false otherwise.
+     */
     private boolean isValidURL(String urlString) {
         if (urlString == null || urlString.isEmpty()) {
             return false;
@@ -133,6 +177,5 @@ public class DencoderServiceImpl implements DencoderService {
             return false;
         }
     }
-
 
 }

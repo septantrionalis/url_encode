@@ -28,20 +28,36 @@ public class Demo6Application {
         SpringApplication.run(Demo6Application.class, args);
     }
 
+    /**
+     * Encodes a URL to a shortened URL
+     * @param normalUrl the regular url to shorten.
+     * @return a shortened URL
+     */
     @GetMapping("/encode")
     public DencodeEntity encode(@RequestParam(value = "url") String normalUrl) {
         return dencoderService.encode(normalUrl);
     }
 
+    /**
+     * Decodes a shortened URL to its original URL.
+     * @param shortenedUrl The shortened URL to convert to a regular URL.
+     * @return The shortened URL.
+     */
     @GetMapping("/decode")
     public DencodeEntity decode(@RequestParam(value = "url") String shortenedUrl) {
         return dencoderService.decode(shortenedUrl);
     }
 
-    /**
+    /*
      * Added debug methods to help me test the app below.
      */
 
+    /**
+     * Used for debug purposes!
+     * Adds a key for the specified url to the DB
+     * @param key the key to add.
+     * @param normalUrl the url to add.
+     */
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestParam(value = "key") String key,
                                       @RequestParam(value = "normal-url") String normalUrl) {
@@ -50,6 +66,11 @@ public class Demo6Application {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Used for debug purposes!
+     * Returns all data in the DB.
+     * @return all data in the DB.
+     */
     @GetMapping("/get")
     public List<DencodeEntity> decode() {
         return dencoderService.getAll();
