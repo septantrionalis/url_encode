@@ -54,6 +54,5 @@ public class DencoderRepostitoryTest {
         Optional<String> result = dencoderRepository.getKey(normalUrl);
 
         assertThat(result.get()).isEqualTo(key);
-
     }
 }
