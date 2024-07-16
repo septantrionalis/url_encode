@@ -27,17 +27,26 @@ public class DencoderServiceImpl implements DencoderService {
 
     @Override
     public DencodeEntity encode(String url) {
+        // Do not process if url is invalid.
         if (!isValidURL(url)) {
             throw new DecodeException("Invalid URL");
         }
 
-        String randomKey = generateRandomString();
+        // If the URL has already been shortened, do not generate and grab the old one.
+        Optional<String> key = dencoderRepository.getKey(url);
+        if (key.isPresent()) {
+            String shortenedKey = dencoderRepository.getShortenedUrlHost() + key.get();
+            return new DencodeEntity(shortenedKey, url);
+        }
 
+        // Generate a random key.  If not unique, retry.
+        String randomKey = generateRandomString();
         while (dencoderRepository.isKeyExists(randomKey)) {
             logger.info("Found key {} in DB. Regenerating...", randomKey);
             randomKey = generateRandomString();
         }
 
+        // Create the  shortened URL and add to the DB.
         String shortenedUrl = dencoderRepository.getShortenedUrlHost() + randomKey;
         dencoderRepository.addKey(randomKey, url);
 

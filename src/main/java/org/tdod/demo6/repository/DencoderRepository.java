@@ -13,6 +13,8 @@ public interface DencoderRepository {
 
     void addKey(String key, String normalUrl);
 
+    Optional<String> getKey(String normalUrl);
+
     Optional<String> getNormalUrl(String key);
 
     List<DencodeEntity> getAll();

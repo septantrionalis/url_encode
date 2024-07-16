@@ -25,13 +25,25 @@ public class DencoderRepositoryImpl implements DencoderRepository {
     }
 
     @Override
+    public Optional<String> getNormalUrl(String key) {
+        return Optional.ofNullable(shortenedUrlKeyStore.get(key));
+    }
+
+    @Override
     public void addKey(String key, String normalUrl) {
         shortenedUrlKeyStore.put(key, normalUrl);
     }
 
     @Override
-    public Optional<String> getNormalUrl(String key) {
-        return Optional.ofNullable(shortenedUrlKeyStore.get(key));
+    public Optional<String> getKey(String normalUrl) {
+
+        Optional<String> test = shortenedUrlKeyStore.entrySet()
+                .stream()
+                .filter(e -> e.getValue().equalsIgnoreCase(normalUrl))
+                .findFirst()
+                .map(Map.Entry::getKey);
+
+        return test;
     }
 
     public List<DencodeEntity> getAll() {
