@@ -1,12 +1,14 @@
 package org.tdod.demo6.service;
 
+import org.tdod.demo6.entity.DencodeEntity;
+
 import java.util.Optional;
 
 public interface DencoderService {
 
-    String encode(String url);
+    DencodeEntity encode(String url);
 
-    Optional<String> decode(String url);
+    DencodeEntity decode(String url);
 
     void addKey(String key, String url);
 }

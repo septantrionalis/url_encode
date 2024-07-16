@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.tdod.demo6.entity.DencodeEntity;
 import org.tdod.demo6.service.DencoderService;
 
 import java.util.Optional;
@@ -27,26 +28,18 @@ public class Demo6Application {
     }
 
     @GetMapping("/encode")
-    public String encode(@RequestParam(value = "url") String normalUrl) {
+    public DencodeEntity encode(@RequestParam(value = "url") String normalUrl) {
         return dencoderService.encode(normalUrl);
     }
 
     @GetMapping("/decode")
-    public String decode(@RequestParam(value = "url") String shortenedUrl) {
-        Optional<String> normalString;
-        try {
-            normalString = dencoderService.decode(shortenedUrl);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-
-        if (!normalString.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shortened URL not valid");
-        }
-
-        return normalString.get();
-
+    public DencodeEntity decode(@RequestParam(value = "url") String shortenedUrl) {
+        return dencoderService.decode(shortenedUrl);
     }
+
+    /**
+     * Added debug methods to help me test the app below.
+     */
 
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestParam(value = "key") String key,
@@ -55,4 +48,6 @@ public class Demo6Application {
 
         return ResponseEntity.ok().build();
     }
+
+
 }

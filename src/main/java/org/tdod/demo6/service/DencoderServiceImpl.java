@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.tdod.demo6.entity.DencodeEntity;
 import org.tdod.demo6.exception.DecodeException;
 import org.tdod.demo6.repository.DencoderRepository;
 
@@ -24,7 +25,11 @@ public class DencoderServiceImpl implements DencoderService {
     DencoderRepository dencoderRepository;
 
     @Override
-    public String encode(String url) {
+    public DencodeEntity encode(String url) {
+        if (!isValidURL(url)) {
+            throw new DecodeException("Invalid URL");
+        }
+
         String randomKey = generateRandomString();
 
         while (dencoderRepository.isKeyExists(randomKey)) {
@@ -32,13 +37,14 @@ public class DencoderServiceImpl implements DencoderService {
             randomKey = generateRandomString();
         }
 
+        String shortenedUrl = dencoderRepository.getShortenedUrlHost() + randomKey;
         dencoderRepository.addKey(randomKey, url);
 
-        return randomKey;
+        return new DencodeEntity(shortenedUrl, url);
     }
 
     @Override
-    public Optional<String> decode(String url) {
+    public DencodeEntity decode(String url) {
         String key = extractUrlKey(url);
         String host = extractUrlHost(url);
 
@@ -52,7 +58,7 @@ public class DencoderServiceImpl implements DencoderService {
             throw new DecodeException("Shortened version of URL not found.");
         }
 
-        return normalUrl;
+        return new DencodeEntity(url, normalUrl.get());
     }
 
     @Override
@@ -95,7 +101,23 @@ public class DencoderServiceImpl implements DencoderService {
             throw new DecodeException("The URL doesn't appear to be valid");
         }
 
-        return urlString.substring(0, lastIndex + 1);    }
+        return urlString.substring(0, lastIndex + 1);
+    }
+
+    private boolean isValidURL(String urlString) {
+        if (urlString == null || urlString.isEmpty()) {
+            return false;
+        }
+
+        try {
+            new URL(urlString);
+            // If no exception is thrown, the URL is valid
+            return true;
+        } catch (MalformedURLException e) {
+            // If a MalformedURLException is thrown, the URL is invalid
+            return false;
+        }
+    }
 
 
 }
