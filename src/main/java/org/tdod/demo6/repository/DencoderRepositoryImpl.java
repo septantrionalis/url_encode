@@ -1,11 +1,11 @@
 package org.tdod.demo6.repository;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.tdod.demo6.entity.DencodeEntity;
 
 import java.util.*;
 
-@Service
+@Repository
 public class DencoderRepositoryImpl implements DencoderRepository {
 
     private Map<String, String> shortenedUrlKeyStore = new HashMap();
