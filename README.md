@@ -6,6 +6,18 @@ Design decisions :
 - Repository class doesn't goto a DB. Will use a HashMap to similate.
 - If the user asks to shorten the same URL, the API will not regenerate the shortened URL but will return the old one.
 - The shortened host is reserved. The user can't pass in a shortened host into the encode API to try and shorten it again.
+
+# Running
+
+This is a Spring Boot application. The starting point is "org.tdod.demo6.Demo6Application" and uses the typical RESTful API stack.<BR>
+- DencoderServiceImpl in the service package handles the service calls and the app business logic.
+- DencoderRepositoryImpl in the repository package handles and "DB" related calls.
+- DencoderException in the exception package handles user case exceptions.
+- DencocderEntity in the entity package is your POJO that is returned to the end user in JSON format.
+- test folder contains the integration tests for Demo6Application and is called "Demo6ApplicationTests"
+
+Bring the application up in a Spring Boot environment.  The following curl statements can be run once the app is up:
+
 # Sample Curl Statements:
 
 ### Encode:
