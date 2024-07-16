@@ -28,7 +28,7 @@ public class DencoderServiceImpl implements DencoderService {
             randomKey = generateRandomString();
         }
 
-        dencoderRepository.addKey(randomKey);
+        dencoderRepository.addKey(randomKey, url);
 
         return randomKey;
     }

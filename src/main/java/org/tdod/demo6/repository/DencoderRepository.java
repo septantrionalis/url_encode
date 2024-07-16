@@ -6,6 +6,6 @@ public interface DencoderRepository {
 
     boolean isKeyExists(String key);
 
-    void addKey(String key);
+    void addKey(String key, String normalUrl);
 
 }
